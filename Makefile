@@ -1,4 +1,4 @@
-NAME = philosophers
+NAME = philo
 
 CFLAGS = -Wall -Wextra -Werror
 
@@ -12,10 +12,10 @@ INCLUDES = philosophers.h
 all: $(NAME)
 
 %.o : %.c $(INCLUDES)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 clean:
 	@$(RM) $(OBJ)

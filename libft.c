@@ -6,11 +6,65 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/01 19:30:03 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/03 16:03:40 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+t_list	*ft_lstnew(int ac, char **av)
+{
+	t_list	*philo;
+
+	philo = malloc(sizeof(t_list));
+	if (philo == NULL)
+		return (NULL);
+	philo->philo_nbr = ft_atoi(av[1]);
+	philo->time_to_die = ft_atoi(av[2]);
+	philo->time_to_eat = ft_atoi(av[3]);
+	philo->time_to_sleep = ft_atoi(av[4]);
+	philo->next = NULL;
+	if (ac == 6)
+		philo->eat_time_max = ft_atoi(av[5]);
+	else
+		philo->eat_time_max = 0;
+	if (philo->philo_nbr < 1 || philo->time_to_die < 0
+		|| philo->time_to_eat < 0 || philo->time_to_sleep < 0
+		|| philo->eat_time_max < 0)
+		return (NULL);
+	return (philo);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*tmp;
+
+	if (!lst || !new)
+		return ;
+	tmp = *lst;
+	if (!tmp)
+	{
+		new->next = *lst;
+		*lst = new;
+		return ;
+	}
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+int	ft_lstsize(t_list *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		count++;
+	}
+	return (count);
+}
 
 void	ft_error(void)
 {
@@ -31,8 +85,8 @@ long	sequal(int i, char *str, int sign)
 	while (str[i] && ft_isdigit(str[i]))
 	{
 		value = value * 10 + str[i++] - '0';
-		if ((value > 2147483647 && sign == 1) || (value > 2147483648 && sign
-                    == -1))
+		if ((value > 2147483647 && sign == 1) || (value > 2147483648 && sign ==
+				-1))
 			ft_error();
 	}
 	if (str[i])
@@ -50,9 +104,7 @@ long	ft_atoi(char *str)
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (!str[i])
-	{
 		ft_error();
-	}
 	if (str[i] == '-')
 	{
 		sign = -1;
@@ -61,17 +113,22 @@ long	ft_atoi(char *str)
 	else if (str[i] == '+')
 		i++;
 	if (!str[i])
-	{
 		ft_error();
-	}
 	return (sequal(i, str, sign));
 }
 
 void	print(t_list *info)
 {
-	printf("%d\n", info->philo_nbr);
-	printf("%d\n", info->time_to_die);
-	printf("%d\n", info->time_to_eat);
-	printf("%d\n", info->time_to_sleep);
-	printf("%d\n", info->eat_time_max);
+	int i = 1;
+
+	while(info)
+	{
+		printf("philo-->%d: philo_nbr %d\n", i,info->philo_nbr);
+		printf("philo-->%d: time_to_die :%d\n", i,info->time_to_die);
+		printf("philo-->%d: time_to_eat :%d\n", i,info->time_to_eat);
+		printf("philo-->%d: time_to_sleep :%d\n", i,info->time_to_sleep);
+		printf("philo-->%d: eat_time_max :%llu\n", i,info->eat_time_max);
+		i++;
+		info = info->next;
+	}
 }

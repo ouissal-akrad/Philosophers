@@ -6,37 +6,75 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/01 19:36:33 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/03 17:18:23 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	valid_params(int ac, char **av)
+void	*routine(void *param)
 {
-	t_list	*info;
+	t_list	*philo;
 
-	info = malloc(sizeof(t_list));
-	if (info == NULL)
-		ft_error();
-	info->philo_nbr = ft_atoi(av[1]);
-	info->time_to_die = ft_atoi(av[2]);
-	info->time_to_eat = ft_atoi(av[3]);
-	info->time_to_sleep = ft_atoi(av[4]);
-	if (ac == 6)
-		info->eat_time_max = ft_atoi(av[5]);
-	else
-		info->eat_time_max = 0;
-	if (info->philo_nbr < 1 || info->time_to_die < 0 || info->time_to_eat < 0
-		|| info->time_to_sleep < 0 || info->eat_time_max < 0)
-		return (0);
-	print(info);
-	return (1);
+	philo = (t_list *)param;
+	while (philo->philo_nbr)
+	{
+		if (philo->philo_nbr % 2 == 0)
+			usleep(philo->time_to_eat * 1000);
+		pthread_mutex_lock(&philo->fork);
+		printf("%d has taken a fork\n", philo->philo_nbr);
+		pthread_mutex_lock(&philo->next->fork);
+		printf("%d has teken a fork\n", philo->philo_nbr);
+		printf("%d is eating\n", philo->philo_nbr);
+		usleep(philo->time_to_eat * 1000);
+		pthread_mutex_unlock(&philo->fork);
+		pthread_mutex_unlock(&philo->next->fork);
+		printf("%d is sleeping\n", philo->philo_nbr);
+		usleep(philo->time_to_sleep * 1000);
+		printf("%d is thinking\n", philo->philo_nbr);
+	}
+	return (NULL);
 }
+
+t_list	*init_philo(int ac, char **av)
+{
+	t_list	*philo;
+	int		i;
+	int		philo_nbr;
+	t_list	*temp;
+
+	philo = NULL;
+	philo_nbr = ft_atoi(av[1]);
+	i = 0;
+	while (i < philo_nbr)
+	{
+		ft_lstadd_back(&philo, ft_lstnew(ac, av));
+		i++;
+	}
+	i = 0;
+	temp = philo;
+	while (i < philo_nbr)
+	{
+		pthread_create(&(temp->philo), NULL, &routine, temp);
+		temp = temp->next;
+		i++;
+	}
+	i = 0;
+	temp = philo;
+	while (i < philo_nbr)
+	{
+		pthread_join(temp->philo, NULL);
+		temp = temp->next;
+		i++;
+	}
+	// print(philo);
+	return (philo);
+}
+
 int	main(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
 		ft_error();
-	if (!valid_params(ac, av))
-		ft_error();
+	if (!init_philo(ac, av))
+		return (0);
 }
