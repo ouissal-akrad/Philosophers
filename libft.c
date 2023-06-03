@@ -6,11 +6,20 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/03 16:03:40 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/03 21:18:59 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
 
 t_list	*ft_lstnew(int ac, char **av)
 {
@@ -23,14 +32,14 @@ t_list	*ft_lstnew(int ac, char **av)
 	philo->time_to_die = ft_atoi(av[2]);
 	philo->time_to_eat = ft_atoi(av[3]);
 	philo->time_to_sleep = ft_atoi(av[4]);
+	philo->start = ft_get_time();
 	philo->next = NULL;
 	if (ac == 6)
 		philo->eat_time_max = ft_atoi(av[5]);
 	else
 		philo->eat_time_max = 0;
-	if (philo->philo_nbr < 1 || philo->time_to_die < 0
-		|| philo->time_to_eat < 0 || philo->time_to_sleep < 0
-		|| philo->eat_time_max < 0)
+	if (philo->philo_nbr < 1 || philo->time_to_die < 0 || philo->time_to_eat < 0
+		|| philo->time_to_sleep < 0 || philo->eat_time_max < 0)
 		return (NULL);
 	return (philo);
 }
@@ -119,15 +128,16 @@ long	ft_atoi(char *str)
 
 void	print(t_list *info)
 {
-	int i = 1;
+	int	i;
 
-	while(info)
+	i = 1;
+	while (info)
 	{
-		printf("philo-->%d: philo_nbr %d\n", i,info->philo_nbr);
-		printf("philo-->%d: time_to_die :%d\n", i,info->time_to_die);
-		printf("philo-->%d: time_to_eat :%d\n", i,info->time_to_eat);
-		printf("philo-->%d: time_to_sleep :%d\n", i,info->time_to_sleep);
-		printf("philo-->%d: eat_time_max :%llu\n", i,info->eat_time_max);
+		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
+		printf("philo-->%d: time_to_die :%d\n", i, info->time_to_die);
+		printf("philo-->%d: time_to_eat :%d\n", i, info->time_to_eat);
+		printf("philo-->%d: time_to_sleep :%d\n", i, info->time_to_sleep);
+		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
 		i++;
 		info = info->next;
 	}
