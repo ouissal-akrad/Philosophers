@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/03 21:18:59 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/04 20:05:53 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ t_list	*ft_lstnew(int ac, char **av)
 	philo->time_to_eat = ft_atoi(av[3]);
 	philo->time_to_sleep = ft_atoi(av[4]);
 	philo->start = ft_get_time();
+	philo->last_eat = ft_get_time();
+	pthread_mutex_init(&philo->fork, NULL);
 	philo->next = NULL;
 	if (ac == 6)
 		philo->eat_time_max = ft_atoi(av[5]);
@@ -126,19 +128,19 @@ long	ft_atoi(char *str)
 	return (sequal(i, str, sign));
 }
 
-void	print(t_list *info)
-{
-	int	i;
+// void	print(t_list *info)
+// {
+// 	int	i;
 
-	i = 1;
-	while (info)
-	{
-		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
-		printf("philo-->%d: time_to_die :%d\n", i, info->time_to_die);
-		printf("philo-->%d: time_to_eat :%d\n", i, info->time_to_eat);
-		printf("philo-->%d: time_to_sleep :%d\n", i, info->time_to_sleep);
-		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
-		i++;
-		info = info->next;
-	}
-}
+// 	i = 1;
+// 	while (info)
+// 	{
+// 		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
+// 		printf("philo-->%d: time_to_die :%d\n", i, info->time_to_die);
+// 		printf("philo-->%d: time_to_eat :%d\n", i, info->time_to_eat);
+// 		printf("philo-->%d: time_to_sleep :%d\n", i, info->time_to_sleep);
+// 		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
+// 		i++;
+// 		info = info->next;
+// 	}
+// }
