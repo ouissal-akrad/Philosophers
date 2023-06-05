@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/05 15:47:26 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/05 17:31:57 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@ t_list	*ft_lstnew(int ac, char **av)
 	philo->time_to_eat = ft_atoi(av[3]);
 	philo->time_to_sleep = ft_atoi(av[4]);
 	philo->n_meals = 0;
+	philo->check = 0;
 	philo->start = ft_get_time();
 	philo->last_eat = ft_get_time();
 	pthread_mutex_init(&philo->fork, NULL);
+	pthread_mutex_init(&philo->for_last_eat, NULL);
+	pthread_mutex_init(&philo->for_n_meals, NULL);
 	philo->next = NULL;
 	if (ac == 6)
 		philo->eat_time_max = ft_atoi(av[5]);

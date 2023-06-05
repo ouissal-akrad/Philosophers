@@ -11,7 +11,10 @@ typedef struct s_philo
 {
 	pthread_t				philo;
 	pthread_mutex_t			fork;
-	pthread_mutex_t			*ft_printf;
+	pthread_mutex_t			for_n_meals;
+	pthread_mutex_t			for_last_eat;
+	pthread_mutex_t ft_printf_mutex; // Mutex for ft_printf
+	int						check;
 	int						index;
 	int						philo_nbr;
 	unsigned long long int	time_to_die;
@@ -20,7 +23,7 @@ typedef struct s_philo
 	long long int			eat_time_max;
 	unsigned long long int	last_eat;
 	unsigned long long int	start;
-	int			n_meals;
+	int						n_meals;
 	struct s_philo			*next;
 }							t_list;
 
