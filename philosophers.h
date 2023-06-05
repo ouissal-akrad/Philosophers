@@ -17,10 +17,10 @@ typedef struct s_philo
 	unsigned long long int	time_to_die;
 	unsigned long long int	time_to_eat;
 	unsigned long long int	time_to_sleep;
-	unsigned long long int	eat_time_max;
+	long long int			eat_time_max;
 	unsigned long long int	last_eat;
 	unsigned long long int	start;
-	unsigned long long int	n_meals;
+	int			n_meals;
 	struct s_philo			*next;
 }							t_list;
 

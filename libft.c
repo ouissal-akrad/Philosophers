@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/04 20:05:53 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/05 15:47:26 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_list	*ft_lstlast(t_list *lst)
 t_list	*ft_lstnew(int ac, char **av)
 {
 	t_list	*philo;
-
+	
 	philo = malloc(sizeof(t_list));
 	if (philo == NULL)
 		return (NULL);
@@ -32,6 +32,7 @@ t_list	*ft_lstnew(int ac, char **av)
 	philo->time_to_die = ft_atoi(av[2]);
 	philo->time_to_eat = ft_atoi(av[3]);
 	philo->time_to_sleep = ft_atoi(av[4]);
+	philo->n_meals = 0;
 	philo->start = ft_get_time();
 	philo->last_eat = ft_get_time();
 	pthread_mutex_init(&philo->fork, NULL);

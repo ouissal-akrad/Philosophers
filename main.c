@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/04 21:11:14 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/05 16:10:32 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,25 @@ void	my_usleep(unsigned long long time)
 
 void	death(t_list *philo)
 {
+	int	i;
+
 	while (1)
 	{
-		if ((ft_get_time() - philo->last_eat) > philo->time_to_die)
+		i = 0;
+		if ((ft_get_time() - philo->last_eat) >= philo->time_to_die)
 		{
 			printf("%lld %d died\n", ft_get_time() - philo->start,
 					philo->philo_nbr);
-			exit(0);
 			break ;
 		}
-		if ((philo->n_meals > 0) && philo->n_meals <= philo->philo_nbr
-			* philo->eat_time_max)
-			break ;
+		if ((philo->eat_time_max > 0) && philo->n_meals >= philo->eat_time_max)
+		{
+			i++;
+			if (i >= philo->eat_time_max)
+				break ;
+		}
 		philo = philo->next;
 	}
-}
-
-void	ft_printf(const char *message)
-{
-	pthread_mutex_t mutex;
-	pthread_mutex_init(&mutex, NULL);
-	pthread_mutex_lock(&mutex);
-	printf("%s", message);
-	pthread_mutex_unlock(&mutex);
 }
 
 void	*routine(void *arg)
@@ -74,12 +70,12 @@ void	*routine(void *arg)
 		philo->last_eat = ft_get_time();
 		printf("%lld %d is eating\n", ft_get_time() - philo->start,
 				philo->index);
+		philo->n_meals++;
 		my_usleep(philo->time_to_eat);
 		pthread_mutex_unlock(&philo->fork);
 		pthread_mutex_unlock(&philo->next->fork);
-		philo->n_meals++;
-		if (philo->eat_time_max && philo->eat_time_max <= philo->n_meals)
-			break ;
+		// if (philo->eat_time_max && philo->eat_time_max <= philo->n_meals)
+		// 	break ;
 		printf("%lld %d is sleeping\n", ft_get_time() - philo->start,
 				philo->index);
 		my_usleep(philo->time_to_sleep);
@@ -95,7 +91,9 @@ t_list	*init_philo(int ac, char **av)
 	int		i;
 	int		philo_nbr;
 	t_list	*temp;
+	int		*n_meals;
 
+	n_meals = 0;
 	philo = NULL;
 	philo_nbr = ft_atoi(av[1]);
 	i = 0;
