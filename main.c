@@ -6,11 +6,24 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/05 23:20:03 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/05 23:49:00 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	ft_free(t_list *philo, int philo_size)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo_size)
+	{
+		free(philo);
+		philo = philo->next;
+		i++;
+	}
+}
 
 unsigned long long	ft_get_time(void)
 {
@@ -47,8 +60,8 @@ void	death(t_list *philo)
 		if ((ft_get_time() - philo->last_eat) >= philo->time_to_die)
 		{
 			ft_printf("died", philo);
-			pthread_mutex_lock(&philo->ft_printf_mutex);
 			pthread_mutex_unlock(&philo->for_last_eat);
+			ft_free(philo,philo->philo_nbr);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->for_last_eat);
@@ -60,7 +73,10 @@ void	death(t_list *philo)
 			philo->check = 1;
 			i++;
 			if (i >= philo->philo_nbr)
+			{
+				ft_free(philo,philo->philo_nbr);
 				break ;
+			}
 		}
 		pthread_mutex_unlock(&philo->for_n_meals);
 		philo = philo->next;

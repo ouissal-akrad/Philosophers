@@ -39,6 +39,6 @@ t_list						*ft_lstlast(t_list *lst);
 int							ft_lstsize(t_list *lst);
 void						*routine(void *arg);
 unsigned long long			ft_get_time(void);
-void						killer(t_list *philo);
+void						ft_free(t_list *philo, int philo_size);
 
 #endif
