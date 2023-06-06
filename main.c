@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/05 23:49:00 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/06 14:11:27 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ void	death(t_list *philo)
 		pthread_mutex_lock(&philo->for_last_eat);
 		if ((ft_get_time() - philo->last_eat) >= philo->time_to_die)
 		{
-			ft_printf("died", philo);
+			pthread_mutex_lock(&philo->ft_printf_mutex);
+			printf("%lld %d died\n", ft_get_time() - philo->start,
+					philo->philo_nbr);
 			pthread_mutex_unlock(&philo->for_last_eat);
-			ft_free(philo,philo->philo_nbr);
+			ft_free(philo, philo->philo_nbr);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->for_last_eat);
@@ -74,7 +76,7 @@ void	death(t_list *philo)
 			i++;
 			if (i >= philo->philo_nbr)
 			{
-				ft_free(philo,philo->philo_nbr);
+				ft_free(philo, philo->philo_nbr);
 				break ;
 			}
 		}
@@ -132,6 +134,7 @@ t_list	*init_philo(int ac, char **av)
 		i++;
 	}
 	ft_lstlast(philo)->next = philo;
+	// print(philo);
 	i = 0;
 	temp = philo;
 	while (i < philo_nbr)
@@ -162,6 +165,7 @@ t_list	*init_philo(int ac, char **av)
 
 int	main(int ac, char **av)
 {
+	
 	t_list *philo;
 	if (ac < 5 || ac > 6)
 		ft_error();

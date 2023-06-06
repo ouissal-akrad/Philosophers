@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/05 23:32:23 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/06 14:15:24 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,7 @@ long	ft_atoi(char *str)
 	if (!str[i])
 		ft_error();
 	if (str[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
+		ft_error();
 	else if (str[i] == '+')
 		i++;
 	if (!str[i])
@@ -132,19 +129,19 @@ long	ft_atoi(char *str)
 	return (sequal(i, str, sign));
 }
 
-// void	print(t_list *info)
-// {
-// 	int	i;
+void	print(t_list *info)
+{
+	int	i;
 
-// 	i = 1;
-// 	while (info)
-// 	{
-// 		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
-// 		printf("philo-->%d: time_to_die :%d\n", i, info->time_to_die);
-// 		printf("philo-->%d: time_to_eat :%d\n", i, info->time_to_eat);
-// 		printf("philo-->%d: time_to_sleep :%d\n", i, info->time_to_sleep);
-// 		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
-// 		i++;
-// 		info = info->next;
-// 	}
-// }
+	i = 1;
+	while (info)
+	{
+		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
+		printf("philo-->%d: time_to_die :%llu\n", i, info->time_to_die);
+		printf("philo-->%d: time_to_eat :%llu\n", i, info->time_to_eat);
+		printf("philo-->%d: time_to_sleep :%llu\n", i, info->time_to_sleep);
+		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
+		i++;
+		info = info->next;
+	}
+}
