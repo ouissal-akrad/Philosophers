@@ -6,11 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/06 14:15:24 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/08 20:04:01 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 t_list	*ft_lstlast(t_list *lst)
 {
@@ -24,7 +24,6 @@ t_list	*ft_lstlast(t_list *lst)
 t_list	*ft_lstnew(int ac, char **av)
 {
 	t_list	*philo;
-	
 	philo = malloc(sizeof(t_list));
 	if (philo == NULL)
 		return (NULL);
@@ -36,9 +35,10 @@ t_list	*ft_lstnew(int ac, char **av)
 	philo->check = 0;
 	philo->start = ft_get_time();
 	philo->last_eat = ft_get_time();
-	pthread_mutex_init(&philo->fork, NULL);
-	pthread_mutex_init(&philo->for_last_eat, NULL);
-	pthread_mutex_init(&philo->for_n_meals, NULL);
+	sem_unlink("forks");
+	philo->fork = sem_open("forks", O_CREAT, 666, philo->philo_nbr);
+	sem_unlink("print");
+	philo->print = sem_open("print", O_CREAT, 666, 1);
 	philo->next = NULL;
 	if (ac == 6)
 		philo->eat_time_max = ft_atoi(av[5]);
@@ -55,7 +55,9 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	t_list	*tmp;
 
 	if (!lst || !new)
+	{
 		return ;
+	}
 	tmp = *lst;
 	if (!tmp)
 	{
@@ -129,19 +131,19 @@ long	ft_atoi(char *str)
 	return (sequal(i, str, sign));
 }
 
-void	print(t_list *info)
-{
-	int	i;
+// void	print(t_list *info)
+// {
+// 	int	i;
 
-	i = 1;
-	while (info)
-	{
-		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
-		printf("philo-->%d: time_to_die :%llu\n", i, info->time_to_die);
-		printf("philo-->%d: time_to_eat :%llu\n", i, info->time_to_eat);
-		printf("philo-->%d: time_to_sleep :%llu\n", i, info->time_to_sleep);
-		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
-		i++;
-		info = info->next;
-	}
-}
+// 	i = 1;
+// 	while (info)
+// 	{
+// 		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
+// 		printf("philo-->%d: time_to_die :%llu\n", i, info->time_to_die);
+// 		printf("philo-->%d: time_to_eat :%llu\n", i, info->time_to_eat);
+// 		printf("philo-->%d: time_to_sleep :%llu\n", i, info->time_to_sleep);
+// 		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
+// 		i++;
+// 		info = info->next;
+// 	}
+// }

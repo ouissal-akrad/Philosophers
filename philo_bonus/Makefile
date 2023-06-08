@@ -1,4 +1,4 @@
-NAME = philo
+NAME = philo_bonus
 
 CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
 
@@ -7,7 +7,7 @@ SRC = 	main.c\
 
 OBJ = $(SRC:.c=.o)
 
-INCLUDES = philosophers.h
+INCLUDES = philo_bonus.h
 
 all: $(NAME)
 
