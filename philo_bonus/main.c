@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/09 15:21:26 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/09 17:54:04 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ void	*death(void *arg)
 	t_list	*philo;
 
 	philo = (t_list *)arg;
+	// printf("start [%lld]\n", )
 	while (1)
 	{
-		if (((ft_get_time() - philo->start)
-				- philo->last_eat) > (philo->time_to_die))
+		if (((ft_get_time()) - philo->last_eat) > (philo->time_to_die))
 		{
 			sem_wait(philo->print);
 			printf("%lld %d died\n", ft_get_time() - philo->start,
 					philo->index);
-			exit(1);
+			exit(0);
 		}
 	}
 	return (NULL);
@@ -69,40 +69,45 @@ void	kill_all_philo(t_list *philo)
 	int	i;
 
 	i = 0;
-	while (i < philo->philo_nbr)
+	while (philo)
 	{
-		kill(philo->pids[i], SIGKILL);
-		i++;
+		kill(philo->pid, SIGKILL);
+		philo = philo->next;
+		if (philo->index == 1)
+			return ;
 	}
-	ft_free(philo,philo->philo_nbr);
+	ft_free(philo, philo->philo_nbr);
 }
 
 void	waiting(t_list *philo)
 {
-	while (1)
+	while (waitpid(-1, &philo->status, 0) > 0)
 	{
-		waitpid(-1, &philo->status, 0);
-		if (philo->status == 0 || philo->status == 1)
-		{
+		if (philo->status == 0)
 			kill_all_philo(philo);
-			break ;
-		}
 	}
 }
 
 void	ft_routine(t_list *philo)
 {
+	pthread_create(&philo->philo, NULL, &death, philo);
 	while (1)
 	{
 		sem_wait(philo->fork);
+		sem_wait(philo->print);
 		printf("%lld %d has taken a fork\n", ft_get_time() - philo->start,
 				philo->index);
+		sem_post(philo->print);
 		sem_wait(philo->fork);
+		sem_wait(philo->print);
 		printf("%lld %d has taken a fork\n", ft_get_time() - philo->start,
 				philo->index);
+		sem_post(philo->print);
+		sem_wait(philo->print);
 		philo->last_eat = ft_get_time();
 		printf("%lld %d is eating\n", ft_get_time() - philo->start,
 				philo->index);
+		sem_post(philo->print);
 		my_usleep(philo->time_to_eat);
 		sem_post(philo->fork);
 		sem_post(philo->fork);
@@ -110,11 +115,15 @@ void	ft_routine(t_list *philo)
 			philo->n_meals++;
 		if (philo->eat_time_max && philo->eat_time_max <= philo->n_meals)
 			exit(0);
+		sem_wait(philo->print);
 		printf("%lld %d is sleeping\n", ft_get_time() - philo->start,
 				philo->index);
+		sem_post(philo->print);
 		my_usleep(philo->time_to_sleep);
+		sem_wait(philo->print);
 		printf("%lld %d is thinking\n", ft_get_time() - philo->start,
 				philo->index);
+		sem_post(philo->print);
 	}
 }
 
@@ -153,21 +162,26 @@ int	main(int ac, char **av)
 	if (!philo)
 		return (0);
 	t_list *temp = philo;
-	while (i < philo_nbr &&philo->pid != 0)
+	time_t start = ft_get_time();
+	while (i < philo_nbr)
 	{
+		temp->start = start;
 		temp->pid = fork();
 		if (temp->pid == -1)
 			ft_error();
-		temp->pids[i] = temp->pid;
-		i++;
+		else if (temp->pid == 0)
+			ft_routine(temp);
 		temp = temp->next;
-		if (temp->pid == 0)
-			pthread_create(&(temp->philo), NULL, &death, temp);
+		i++;
 	}
-	if (philo->pid == 0)
-		ft_routine(philo);
-	else
-		waiting(philo);
+	// exit(0);
+	int status;
+	while (waitpid(-1, &status, 0) > 0)
+	{
+		if (status == 0)
+			kill_all_philo(philo);
+	}
+	// waiting(philo);
 	sem_close(philo->fork);
 	sem_unlink("fork");
 	sem_close(philo->print);
