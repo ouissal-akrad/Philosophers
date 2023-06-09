@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/08 15:59:08 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/09 11:57:18 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	death(t_list *philo)
 		{
 			pthread_mutex_lock(philo->ft_printf_mutex);
 			printf("%lld %d died\n", ft_get_time() - philo->start,
-					philo->philo_nbr);
+					philo->index);
 			pthread_mutex_unlock(&philo->for_last_eat);
 			ft_free(philo,philo->philo_nbr);
 			break ;

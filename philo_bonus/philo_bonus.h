@@ -11,13 +11,15 @@
 
 typedef struct s_philo
 {
-	int				pid;
+	pid_t			pid;
+	pid_t			*pids;
 	pthread_t		philo;
 	sem_t			*fork;
+	sem_t			*print;
+	int				status;
 	int				for_n_meals;
 	int				for_last_eat;
-	sem_t *print;
-	int check;
+	int				check;
 	int				index;
 	int				philo_nbr;
 	size_t			time_to_die;
@@ -43,5 +45,8 @@ int					ft_lstsize(t_list *lst);
 void				ft_routine(t_list *philo);
 unsigned long long	ft_get_time(void);
 void				ft_free(t_list *philo, int philo_size);
+void				waiting(t_list *philo);
+void				*death(void *arg);
+void				kill_all_philo(t_list *philo);
 
 #endif
