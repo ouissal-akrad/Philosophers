@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/10 14:29:53 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/11 13:53:09 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ void	*death(void *arg)
 	philo = (t_list *)arg;
 	while (1)
 	{
-		if ((((ft_get_time()) - philo->start)
-				- philo->last_eat) > (philo->data->time_to_die))
+		if ((ft_get_time() - philo->data->start - philo->last_eat) > (philo->data->time_to_die))
 		{
 			sem_wait(philo->data->print);
-			printf("%lld %d died\n", ft_get_time() - philo->start,
+			printf("%lld %d died\n", ft_get_time() - philo->data->start,
 					philo->index);
-			exit(0);
+			exit(1);
 		}
 	}
 	return (NULL);
@@ -81,10 +80,14 @@ void	kill_all_philo(t_list *philo)
 
 void	waiting(t_list *philo)
 {
-	while (waitpid(-1, &philo->status, 0) > 0)
+	while (1)
 	{
-		if (philo->status == 0)
+		waitpid(-1, &philo->status, 0);
+		if (philo->status == 0 || philo->status == 1)
+		{
 			kill_all_philo(philo);
+			break ;
+		}
 	}
 }
 
@@ -95,17 +98,17 @@ void	ft_routine(t_list *philo)
 	{
 		sem_wait(philo->data->fork);
 		sem_wait(philo->data->print);
-		printf("%lld %d has taken a fork\n", ft_get_time() - philo->start,
+		printf("%lld %d has taken a fork\n", ft_get_time() - philo->data->start,
 				philo->index);
 		sem_post(philo->data->print);
 		sem_wait(philo->data->fork);
 		sem_wait(philo->data->print);
-		printf("%lld %d has taken a fork\n", ft_get_time() - philo->start,
+		printf("%lld %d has taken a fork\n", ft_get_time() - philo->data->start,
 				philo->index);
 		sem_post(philo->data->print);
 		sem_wait(philo->data->print);
 		philo->last_eat = ft_get_time();
-		printf("%lld %d is eating\n", ft_get_time() - philo->start,
+		printf("%lld %d is eating\n", ft_get_time() - philo->data->start,
 				philo->index);
 		sem_post(philo->data->print);
 		my_usleep(philo->data->time_to_eat);
@@ -117,12 +120,12 @@ void	ft_routine(t_list *philo)
 			&& philo->data->eat_time_max <= philo->n_meals)
 			exit(0);
 		sem_wait(philo->data->print);
-		printf("%lld %d is sleeping\n", ft_get_time() - philo->start,
+		printf("%lld %d is sleeping\n", ft_get_time() - philo->data->start,
 				philo->index);
 		sem_post(philo->data->print);
 		my_usleep(philo->data->time_to_sleep);
 		sem_wait(philo->data->print);
-		printf("%lld %d is thinking\n", ft_get_time() - philo->start,
+		printf("%lld %d is thinking\n", ft_get_time() - philo->data->start,
 				philo->index);
 		sem_post(philo->data->print);
 	}
@@ -145,16 +148,17 @@ t_list	*init_philo(char **av)
 		i++;
 	}
 	ft_lstlast(philo)->next = philo;
-	philo->start = ft_get_time();
+	// printf("%d\n",ft_lstsize(philo));
 	return (philo);
 }
 
 t_data	*init_data(int ac, char **av)
 {
-	t_data *data;
+	t_data	*data;
+
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
-		return NULL;
+		return (NULL);
 	data->philo_nbr = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
@@ -165,12 +169,13 @@ t_data	*init_data(int ac, char **av)
 		data->eat_time_max = 0;
 	if (data->philo_nbr < 1 || data->time_to_die < 0 || data->time_to_eat < 0
 		|| data->time_to_sleep < 0 || data->eat_time_max < 0)
-		return NULL;
+		ft_error();
+	data->start = ft_get_time();
 	sem_unlink("fork");
 	data->fork = sem_open("fork", O_CREAT, 666, data->philo_nbr);
 	sem_unlink("print");
 	data->print = sem_open("print", O_CREAT, 666, 1);
-	return(data);
+	return (data);
 }
 
 int	main(int ac, char **av)
@@ -187,17 +192,16 @@ int	main(int ac, char **av)
 	philo = init_philo(av);
 	if (!philo)
 		return (0);
-	data = init_data(ac,av);
+	data = init_data(ac, av);
+	philo->data = data;
 	t_list *temp = philo;
-	temp->data = data;
-	time_t start = ft_get_time();
-	while (i < philo_nbr)
+	while (i < philo_nbr && philo->pid != 0)
 	{
-		temp->start = start;
+		// puts("here");
 		temp->pid = fork();
 		if (temp->pid == -1)
 			ft_error();
-		else if (temp->pid == 0)
+		if (temp->pid == 0)
 			ft_routine(temp);
 		temp = temp->next;
 		i++;

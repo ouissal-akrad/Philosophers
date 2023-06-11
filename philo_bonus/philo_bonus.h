@@ -8,16 +8,20 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+#include <stdbool.h>
+
+
 
 typedef struct s_data
 {
 	sem_t			*fork;
 	sem_t			*print;
+	int				philo_nbr;
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			eat_time_max;
-	int				philo_nbr;
+	size_t			start;
 }					t_data;
 
 typedef struct s_philo
@@ -27,7 +31,6 @@ typedef struct s_philo
 	int				status;
 	int				index;
 	size_t			last_eat;
-	size_t			start;
 	size_t			n_meals;
 	t_data			*data;
 	struct s_philo	*next;

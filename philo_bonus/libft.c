@@ -6,34 +6,12 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/10 14:11:17 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/11 13:53:04 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-t_list	*ft_lstnew(int index)
-{
-	t_list	*philo;
-
-	philo = malloc(sizeof(t_list));
-	if (!philo)
-		return (NULL);
-	philo->index = index;
-	philo->next = NULL;
-	philo->last_eat = 0;
-	philo->n_meals = 0;
-	return (philo);
-}
 // t_list	*ft_lstnew(int ac, char **av)
 // {
 // 	t_list	*philo;
@@ -66,12 +44,34 @@ t_list	*ft_lstnew(int index)
 // 	else
 // 		philo->data->eat_time_max = 0;
 // 	if (philo->data->philo_nbr < 1 || philo->data->time_to_die < 0
-			// || philo->data->time_to_eat < 0
+// || philo->data->time_to_eat < 0
 // 		|| philo->data->time_to_sleep < 0 || philo->data->eat_time_max < 0)
 // 		return (NULL);
 // 	return (philo);
 // }
 
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+t_list	*ft_lstnew(int index)
+{
+	t_list	*philo;
+
+	philo = malloc(sizeof(t_list));
+	if (!philo)
+		return (NULL);
+	philo->index = index;
+	philo->next = NULL;
+	philo->last_eat = 0;
+	philo->n_meals = 0;
+	return (philo);
+}
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*tmp;
@@ -92,13 +92,19 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 
 int	ft_lstsize(t_list *lst)
 {
-	int	count;
+	t_list	*current;
+	int		count;
 
+	if (lst == NULL)
+		return (0);
+	current = lst;
 	count = 0;
-	while (lst)
+	while (1)
 	{
-		lst = lst->next;
 		count++;
+		current = current->next;
+		if (current == lst)
+			break ;
 	}
 	return (count);
 }
@@ -151,20 +157,20 @@ long	ft_atoi(char *str)
 	return (sequal(i, str, sign));
 }
 
-// void	print(t_list *info)
+// void	print(t_list *philo)
 // {
-// 	int	i;
+// int	i;
 
-// 	i = 1;
-// 	while (info)
-// 	{
-// 		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
-// 		printf("philo-->%d: philo_index %d\n", i, info->index);
-// 		printf("philo-->%d: time_to_die :%zu\n", i, info->time_to_die);
-// 		printf("philo-->%d: time_to_eat :%zu\n", i, info->time_to_eat);
-// 		printf("philo-->%d: time_to_sleep :%zu\n", i, info->time_to_sleep);
-// 		printf("philo-->%d: eat_time_max :%lld\n", i, info->eat_time_max);
-// 		i++;
-// 		info = info->next;
-// 	}
+// i = 1;
+// while (philo)
+// {
+// 	printf("philo-->%d: philo_nbr %d\n", i, philo->data->philo_nbr);
+// 	// printf("philo-->%d: philo_index %d\n", i, philo->datainfo->index);
+// 	printf("philo-->%d: time_to_die :%zu\n", i, philo->data->time_to_die);
+// 	printf("philo-->%d: time_to_eat :%zu\n", i, philo->data->time_to_eat);
+// 	printf("philo-->%d: time_to_sleep :%zu\n", i, philo->data->time_to_sleep);
+// 	printf("philo-->%d: eat_time_max :%zu\n", i, philo->data->eat_time_max);
+// 	i++;
+// 	philo = philo->next;
+// }
 // }
