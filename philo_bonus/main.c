@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/11 13:53:09 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/12 02:48:06 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ void	my_usleep(unsigned long long time)
 void	*death(void *arg)
 {
 	t_list	*philo;
-
 	philo = (t_list *)arg;
 	while (1)
 	{
-		if ((ft_get_time() - philo->data->start - philo->last_eat) > (philo->data->time_to_die))
+		if (philo->last_eat - philo->data->start > (philo->data->time_to_die))
 		{
 			sem_wait(philo->data->print);
 			printf("%lld %d died\n", ft_get_time() - philo->data->start,
@@ -65,30 +64,36 @@ void	*death(void *arg)
 
 void	kill_all_philo(t_list *philo)
 {
-	int	i;
+	t_list	*start;
 
-	i = 0;
-	while (philo)
+	start = philo;
+	while (1)
 	{
+		if (philo != start)
+			return ;
 		kill(philo->pid, SIGKILL);
 		philo = philo->next;
-		if (philo->index == 1)
-			return ;
+		if (philo == start)
+			break ;
 	}
 	ft_free(philo, philo->data->philo_nbr);
 }
 
 void	waiting(t_list *philo)
 {
-	while (1)
+	while (waitpid(-1, &philo->status, 0) > 0)
 	{
-		waitpid(-1, &philo->status, 0);
-		if (philo->status == 0 || philo->status == 1)
-		{
+		if (philo->status == 0)
 			kill_all_philo(philo);
-			break ;
-		}
 	}
+}
+
+void	ft_printf(char *msg, t_list *philo)
+{
+	sem_wait(philo->data->print);
+	printf("%lld %d %s\n", ft_get_time() - philo->data->start, philo->index,
+			msg);
+	sem_post(philo->data->print);
 }
 
 void	ft_routine(t_list *philo)
@@ -97,20 +102,11 @@ void	ft_routine(t_list *philo)
 	while (1)
 	{
 		sem_wait(philo->data->fork);
-		sem_wait(philo->data->print);
-		printf("%lld %d has taken a fork\n", ft_get_time() - philo->data->start,
-				philo->index);
-		sem_post(philo->data->print);
+		ft_printf("has taken a fork", philo);
 		sem_wait(philo->data->fork);
-		sem_wait(philo->data->print);
-		printf("%lld %d has taken a fork\n", ft_get_time() - philo->data->start,
-				philo->index);
-		sem_post(philo->data->print);
-		sem_wait(philo->data->print);
+		ft_printf("has taken a fork", philo);
 		philo->last_eat = ft_get_time();
-		printf("%lld %d is eating\n", ft_get_time() - philo->data->start,
-				philo->index);
-		sem_post(philo->data->print);
+		ft_printf("is eating", philo);
 		my_usleep(philo->data->time_to_eat);
 		sem_post(philo->data->fork);
 		sem_post(philo->data->fork);
@@ -119,15 +115,9 @@ void	ft_routine(t_list *philo)
 		if (philo->data->eat_time_max
 			&& philo->data->eat_time_max <= philo->n_meals)
 			exit(0);
-		sem_wait(philo->data->print);
-		printf("%lld %d is sleeping\n", ft_get_time() - philo->data->start,
-				philo->index);
-		sem_post(philo->data->print);
+		ft_printf("is sleeping", philo);
 		my_usleep(philo->data->time_to_sleep);
-		sem_wait(philo->data->print);
-		printf("%lld %d is thinking\n", ft_get_time() - philo->data->start,
-				philo->index);
-		sem_post(philo->data->print);
+		ft_printf("is thinking", philo);
 	}
 }
 
@@ -148,7 +138,6 @@ t_list	*init_philo(char **av)
 		i++;
 	}
 	ft_lstlast(philo)->next = philo;
-	// printf("%d\n",ft_lstsize(philo));
 	return (philo);
 }
 
@@ -178,8 +167,15 @@ t_data	*init_data(int ac, char **av)
 	return (data);
 }
 
+void	hh(void)
+{
+	printf("exit pid:%d\n", getpid());
+	fflush(stdout);
+}
+
 int	main(int ac, char **av)
 {
+	// atexit(hh);
 	t_list *philo = NULL;
 	t_data *data;
 	int philo_nbr;
@@ -195,9 +191,9 @@ int	main(int ac, char **av)
 	data = init_data(ac, av);
 	philo->data = data;
 	t_list *temp = philo;
-	while (i < philo_nbr && philo->pid != 0)
+	data->start = ft_get_time();
+	while (i < philo_nbr)
 	{
-		// puts("here");
 		temp->pid = fork();
 		if (temp->pid == -1)
 			ft_error();

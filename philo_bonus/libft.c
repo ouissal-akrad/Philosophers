@@ -6,49 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/11 13:53:04 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/11 16:41:17 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-// t_list	*ft_lstnew(int ac, char **av)
-// {
-// 	t_list	*philo;
-// 	philo = malloc(sizeof(t_list));
-// 	if (philo == NULL)
-// 		return (NULL);
-// 	philo->last_eat = 0;
-// 	philo->n_meals = 0;
-
-// 	return (philo);
-// }
-
-// t_list	*ft_lstnew(int ac, char **av)
-// {
-// 	t_list	*philo;
-// 	philo = malloc(sizeof(t_list));
-// 	if (philo == NULL)
-// 		return (NULL);
-// 	philo->data = malloc(sizeof(t_data));
-// 	if (philo->data == NULL)
-// 		return (NULL);
-// 	philo->data->philo_nbr = ft_atoi(av[1]);
-// 	philo->data->time_to_die = ft_atoi(av[2]);
-// 	philo->data->time_to_eat = ft_atoi(av[3]);
-// 	philo->data->time_to_sleep = ft_atoi(av[4]);
-// 	philo->last_eat = 0;
-// 	philo->n_meals = 0;
-// 	if (ac == 6)
-// 		philo->data->eat_time_max = ft_atoi(av[5]);
-// 	else
-// 		philo->data->eat_time_max = 0;
-// 	if (philo->data->philo_nbr < 1 || philo->data->time_to_die < 0
-// || philo->data->time_to_eat < 0
-// 		|| philo->data->time_to_sleep < 0 || philo->data->eat_time_max < 0)
-// 		return (NULL);
-// 	return (philo);
-// }
 
 t_list	*ft_lstlast(t_list *lst)
 {
@@ -68,7 +30,7 @@ t_list	*ft_lstnew(int index)
 		return (NULL);
 	philo->index = index;
 	philo->next = NULL;
-	philo->last_eat = 0;
+	philo->last_eat = ft_get_time();
 	philo->n_meals = 0;
 	return (philo);
 }
