@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/11 16:41:17 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/12 19:40:28 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,11 @@ int	ft_lstsize(t_list *lst)
 	return (count);
 }
 
-void	ft_error(void)
+void	ft_error(const char *message)
 {
-	printf("ERROR!\n");
+	fprintf(stderr, "Error: %s\n", message);
 	exit(1);
 }
-
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
@@ -92,10 +91,10 @@ long	sequal(int i, char *str, int sign)
 		value = value * 10 + str[i++] - '0';
 		if ((value > 2147483647 && sign == 1) || (value > 2147483648 && sign ==
 				-1))
-			ft_error();
+			ft_error("Invalid number of philosophers");
 	}
 	if (str[i])
-		ft_error();
+		ft_error("Invalid number of philosophers");
 	return (value * sign);
 }
 
@@ -109,13 +108,13 @@ long	ft_atoi(char *str)
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (!str[i])
-		ft_error();
+		ft_error("Invalid number of philosophers");
 	if (str[i] == '-')
-		ft_error();
+		ft_error("Invalid number of philosophers");
 	else if (str[i] == '+')
 		i++;
 	if (!str[i])
-		ft_error();
+		ft_error("Invalid number of philosophers");
 	return (sequal(i, str, sign));
 }
 
