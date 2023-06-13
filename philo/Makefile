@@ -4,6 +4,9 @@ CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
 
 SRC = 	main.c\
 		libft.c\
+		cycle.c\
+		lst.c\
+		philo_utils.c\
 
 OBJ = $(SRC:.c=.o)
 
