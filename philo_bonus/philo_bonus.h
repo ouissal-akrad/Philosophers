@@ -1,5 +1,17 @@
-#ifndef PHILOS_BONUS_H
-# define PHILOS_BONUS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/13 18:18:52 by ouakrad           #+#    #+#             */
+/*   Updated: 2023/06/13 19:18:56 by ouakrad          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <pthread.h>
 # include <semaphore.h>
@@ -41,21 +53,25 @@ typedef struct s_philo
 	struct s_philo		*next;
 }						t_list;
 
-/*------------------libft-----------------*/
-long					ft_atoi(char *str);
-void					ft_error(const char *message);
-int						ft_isdigit(int c);
-void					print(t_list *info);
 t_list					*ft_lstnew(int index);
-void					ft_lstadd_back(t_list **lst, t_list *new);
-t_list					*init_philo(char **av);
 t_list					*ft_lstlast(t_list *lst);
+void					ft_lstadd_back(t_list **lst, t_list *new);
+int						ft_isdigit(int c);
+long					ft_atoi(char *str);
+void					ft_printf(char *msg, t_list *philo);
+void					ft_error(const char *message);
+t_list					*init_philo(char **av);
 void					kill_all_philo(t_list *philo);
-int						ft_lstsize(t_list *lst);
 void					ft_routine(t_list *philo);
 unsigned long long		ft_get_time(void);
 void					ft_free(t_list *philo, int philo_size);
 void					waiting(t_list *philo);
 void					*death(void *arg);
 t_data					*init_data(int ac, char **av);
+void					ft_close(t_list *philo);
+void					ft_fork(char **av, t_list *philo, t_data *data);
+unsigned long long		ft_get_time(void);
+void					my_usleep(unsigned long long time);
+void					waiting(t_list *philo);
+
 #endif
