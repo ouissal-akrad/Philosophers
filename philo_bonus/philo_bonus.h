@@ -17,6 +17,10 @@ typedef struct s_data
 	sem_t				*print;
 	int					philo_nbr;
 	pid_t				*pid_table;
+	pthread_mutex_t		for_n_meals;
+	pthread_mutex_t		for_last_eat;
+	pthread_mutex_t		death;
+
 	unsigned long long	time_to_die;
 	unsigned long long	time_to_eat;
 	unsigned long long	time_to_sleep;
@@ -46,7 +50,7 @@ t_list					*ft_lstnew(int index);
 void					ft_lstadd_back(t_list **lst, t_list *new);
 t_list					*init_philo(char **av);
 t_list					*ft_lstlast(t_list *lst);
-void	kill_all_philo(pid_t *pid_table, int num_processes);
+void					kill_all_philo(t_list *philo);
 int						ft_lstsize(t_list *lst);
 void					ft_routine(t_list *philo);
 unsigned long long		ft_get_time(void);

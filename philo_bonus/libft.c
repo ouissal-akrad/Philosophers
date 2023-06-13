@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/12 19:40:28 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/13 12:28:18 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ long	sequal(int i, char *str, int sign)
 		value = value * 10 + str[i++] - '0';
 		if ((value > 2147483647 && sign == 1) || (value > 2147483648 && sign ==
 				-1))
-			ft_error("Invalid number of philosophers");
+			ft_error("Invalid number");
 	}
 	if (str[i])
-		ft_error("Invalid number of philosophers");
+		ft_error("Invalid number");
 	return (value * sign);
 }
 
@@ -108,13 +108,13 @@ long	ft_atoi(char *str)
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (!str[i])
-		ft_error("Invalid number of philosophers");
+		ft_error("Invalid number");
 	if (str[i] == '-')
-		ft_error("Invalid number of philosophers");
+		ft_error("Invalid number");
 	else if (str[i] == '+')
 		i++;
 	if (!str[i])
-		ft_error("Invalid number of philosophers");
+		ft_error("Invalid number");
 	return (sequal(i, str, sign));
 }
 

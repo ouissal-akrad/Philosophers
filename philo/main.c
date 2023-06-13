@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/12 23:00:35 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/13 13:59:35 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	death(t_list *philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->for_last_eat);
-		if ((ft_get_time() - philo->last_eat) >= philo->time_to_die)
+		if ((ft_get_time() - philo->last_eat) > philo->time_to_die)
 		{
 			pthread_mutex_lock(philo->ft_printf_mutex);
 			printf("%lld %d died\n", ft_get_time() - philo->start,
@@ -105,6 +105,8 @@ void	*routine(void *arg)
 	t_list	*philo;
 
 	philo = (t_list *)arg;
+	if(philo->index % 2 == 0) //
+		usleep(100);
 	while (philo)
 	{
 		pthread_mutex_lock(&philo->fork);
