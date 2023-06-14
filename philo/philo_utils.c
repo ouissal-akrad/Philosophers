@@ -6,30 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:22:16 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 20:58:09 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 20:23:45 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// void	mutex_destroy(t_list *philo)
-// {
-// 	pthread_mutex_destroy(philo->ft_printf_mutex);
-// 	while (philo)
-// 	{
-// 		pthread_mutex_destroy(&philo->fork);
-// 		philo = philo->next;
-// 		if (philo->index == 1)
-// 			break ;
-// 	}
-// 	ft_free(philo,philo->philo_nbr);
-// }
-
-void	ft_error(void)
-{
-	printf("ERROR!\n");
-	exit(1);
-}
 
 void	ft_free(t_list *philo, int philo_size)
 {

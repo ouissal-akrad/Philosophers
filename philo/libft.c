@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:53 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 19:31:40 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 18:31:14 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ long	sequal(int i, char *str, int sign)
 		value = value * 10 + str[i++] - '0';
 		if ((value > 2147483647 && sign == 1) || (value > 2147483648 && sign
 				== -1))
-			ft_error();
+			return (-1);
 	}
 	if (str[i])
-		ft_error();
+		return (-1);
 	return (value * sign);
 }
 
@@ -44,29 +44,12 @@ long	ft_atoi(char *str)
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (!str[i])
-		ft_error();
+		return (-1);
 	if (str[i] == '-')
-		ft_error();
+		return (-1);
 	else if (str[i] == '+')
 		i++;
 	if (!str[i])
-		ft_error();
+		return (-1);
 	return (sequal(i, str, sign));
 }
-
-// void	print(t_list *info)
-// {
-// 	int	i;
-
-// 	i = 1;
-// 	while (info)
-// 	{
-// 		printf("philo-->%d: philo_nbr %d\n", i, info->philo_nbr);
-// 		printf("philo-->%d: time_to_die :%llu\n", i, info->time_to_die);
-// 		printf("philo-->%d: time_to_eat :%llu\n", i, info->time_to_eat);
-// 		printf("philo-->%d: time_to_sleep :%llu\n", i, info->time_to_sleep);
-// 		printf("philo-->%d: eat_time_max :%llu\n", i, info->eat_time_max);
-// 		i++;
-// 		info = info->next;
-// 	}
-// }

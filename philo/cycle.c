@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:20:56 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 22:49:50 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 20:14:32 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	helper(t_list *philo)
 		printf("%lld %d died\n", ft_get_time() - philo->start,
 			philo->philo_nbr);
 		pthread_mutex_unlock(&philo->for_last_eat);
-		// ft_free(philo, philo->philo_nbr);
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->for_last_eat);
@@ -36,10 +35,7 @@ void	death(t_list *philo)
 	while (1)
 	{
 		if (helper(philo))
-		{
 			break ;
-			// ft_free(philo, philo->philo_nbr);
-		}
 		pthread_mutex_lock(&philo->for_n_meals);
 		if ((philo->eat_time_max > 0) && philo->n_meals >= philo->eat_time_max
 			&& philo->check == 0)
@@ -48,51 +44,12 @@ void	death(t_list *philo)
 			philo->check = 1;
 			i++;
 			if (i >= philo->philo_nbr)
-			{
-				// ft_free(philo, philo->philo_nbr);
 				break ;
-			}
 		}
 		pthread_mutex_unlock(&philo->for_n_meals);
 		philo = philo->next;
 	}
 }
-
-// void	death(t_list *philo)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (1)
-// 	{
-// 		pthread_mutex_lock(&philo->for_last_eat);
-// 		if ((ft_get_time() - philo->last_eat) > philo->time_to_die)
-// 		{
-// 			pthread_mutex_lock(philo->ft_printf_mutex);
-// 			printf("%lld %d died\n", ft_get_time() - philo->start,
-// 					philo->philo_nbr);
-// 			pthread_mutex_unlock(&philo->for_last_eat);
-// 			ft_free(philo, philo->philo_nbr);
-// 			break ;
-// 		}
-// 		pthread_mutex_unlock(&philo->for_last_eat);
-// 		pthread_mutex_lock(&philo->for_n_meals);
-// 		if ((philo->eat_time_max > 0) && philo->n_meals >= philo->eat_time_max
-// 			&& philo->check == 0)
-// 		{
-// 			pthread_mutex_unlock(&philo->for_n_meals);
-// 			philo->check = 1;
-// 			i++;
-// 			if (i >= philo->philo_nbr)
-// 			{
-// 				ft_free(philo, philo->philo_nbr);
-// 				break ;
-// 			}
-// 		}
-// 		pthread_mutex_unlock(&philo->for_n_meals);
-// 		philo = philo->next;
-// 	}
-// }
 
 void	sleeping(t_list *philo)
 {

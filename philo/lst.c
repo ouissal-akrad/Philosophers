@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:20:49 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 19:31:05 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 20:17:15 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ t_list	*ft_lstnew(int ac, char **av)
 		philo->eat_time_max = ft_atoi(av[5]);
 	else
 		philo->eat_time_max = 0;
-	if (philo->philo_nbr < 1 || philo->time_to_die < 0 || philo->time_to_eat < 0
-		|| philo->time_to_sleep < 0 || philo->eat_time_max < 0)
-		return (NULL);
 	return (philo);
 }
 

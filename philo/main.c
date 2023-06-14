@@ -6,37 +6,38 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 22:31:50 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 20:24:51 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// void	mutex_destroy(t_list *philo)
-// {
-// 	pthread_mutex_destroy(philo->ft_printf_mutex);
-// 	while (philo)
-// 	{
-// 		pthread_mutex_destroy(&philo->fork);
-// 		philo = philo->next;
-// 		if (philo->index == 1)
-// 			break ;
-// 	}
-// 	ft_free(philo,philo->philo_nbr);
-// }
+void	mutex_destroy(t_list *philo)
+{
+	pthread_mutex_destroy(philo->ft_printf_mutex);
+	while (philo)
+	{
+		pthread_mutex_destroy(&philo->fork);
+		philo = philo->next;
+		if (philo->index == 1)
+			break ;
+	}
+	ft_free(philo, philo->philo_nbr);
+}
 
 void	init_philo_2(t_list *philo, int philo_nbr)
 {
 	t_list			*temp;
-	pthread_mutex_t	ft_printf_mutex;
+	pthread_mutex_t	*ft_printf_mutex;
 	int				i;
 
-	pthread_mutex_init(&ft_printf_mutex, NULL);
+	ft_printf_mutex = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(ft_printf_mutex, NULL);
 	i = 0;
 	temp = philo;
 	while (i < philo_nbr)
 	{
-		temp->ft_printf_mutex = &ft_printf_mutex;
+		temp->ft_printf_mutex = ft_printf_mutex;
 		temp = temp->next;
 		i++;
 	}
@@ -49,6 +50,7 @@ void	init_philo_2(t_list *philo, int philo_nbr)
 		i++;
 	}
 	death(philo);
+	mutex_destroy(philo);
 }
 
 void	*init_philo(int ac, char **av)
@@ -73,10 +75,28 @@ void	*init_philo(int ac, char **av)
 	return (NULL);
 }
 
+int	check(int ac, char **av)
+{
+	int	i;
+
+	i = 1;
+	if (ac > 6)
+		return (write(2, "Error: too many arguments.\n", 28));
+	if (ac < 5)
+		return (write(2, "Error: too few arguments.\n", 27));
+	while (i < ac)
+	{
+		if (ft_atoi(av[i]) <= 0)
+			return (write(2, "Error: Invalid number.\n", 23));
+		i++;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
-	if (ac < 5 || ac > 6)
-		ft_error();
+	if (check(ac, av))
+		return (0);
 	init_philo(ac, av);
 	return (0);
 }
