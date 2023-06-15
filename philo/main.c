@@ -6,62 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/15 10:56:50 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/15 12:51:01 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_free(t_list *philo, int philo_size)
-{
-	int		i;
-	t_list	*tmp;
-
-	i = 0;
-	while (i < philo_size)
-	{
-		tmp = philo->next;
-		free(philo);
-		philo = tmp;
-		i++;
-	}
-}
-
-void	detach_all_threads(t_list *philo)
-{
-	t_list	*current;
-	t_list	*start;
-
-	current = philo;
-	start = philo;
-	int index = 0;
-	while (1)
-	{
-		index++;
-		pthread_detach(current->philo);
-		current = current->next;
-		if (current == start)
-			break ;
-	}
-	ft_free(philo, philo->philo_nbr);
-}
-
-void	mutex_destroy(t_list *philo)
-{
-	int		index;
-	int		size;
-
-	index = 0;
-	size = philo->philo_nbr;
-	pthread_mutex_destroy(philo->ft_printf_mutex);
-	while (index < size)
-	{
-		pthread_mutex_destroy(&philo->fork);
-		index++;
-		philo = philo->next;
-	}
-	detach_all_threads(philo);
-}
 
 void	init_philo_2(t_list *philo, int philo_nbr)
 {
@@ -88,7 +37,6 @@ void	init_philo_2(t_list *philo, int philo_nbr)
 		i++;
 	}
 	death(philo);
-	detach_all_threads(philo);
 	mutex_destroy(philo);
 }
 
@@ -132,14 +80,8 @@ int	check(int ac, char **av)
 	return (0);
 }
 
-void f()
-{
-	system("leaks philo");
-}
-
 int	main(int ac, char **av)
 {
-	atexit(f);
 	if (check(ac, av))
 		return (0);
 	init_philo(ac, av);

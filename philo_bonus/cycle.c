@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:56:31 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 19:15:51 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/15 12:51:33 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	kill_all_philo(t_list *philo)
 		kill(philo->data->pid_table[i], SIGKILL);
 		i++;
 	}
-	//free(philo->data->pid_table);
-	// ft_free(philo,philo->data->philo_nbr);
 }
 
 void	*death(void *arg)
