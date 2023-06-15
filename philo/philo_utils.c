@@ -6,29 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:22:16 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/14 20:23:45 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/14 21:07:45 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_free(t_list *philo, int philo_size)
-{
-	int		i;
-	t_list	*tmp;
-
-	tmp = philo;
-	if (philo == NULL)
-		return ;
-	i = 0;
-	while (i < philo_size)
-	{
-		tmp = philo->next;
-		free(philo);
-		philo = tmp;
-		i++;
-	}
-}
 
 unsigned long long	ft_get_time(void)
 {
