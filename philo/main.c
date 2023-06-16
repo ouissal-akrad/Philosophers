@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/15 13:00:34 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/16 02:32:37 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@ void	init_philo_2(t_list *philo, int philo_nbr)
 	int				i;
 
 	ft_printf_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!ft_printf_mutex)
+		return ;
 	pthread_mutex_init(ft_printf_mutex, NULL);
-	i = 0;
+	i = -1;
 	temp = philo;
-	while (i < philo_nbr)
+	while (++i < philo_nbr)
 	{
 		temp->ft_printf_mutex = ft_printf_mutex;
 		temp = temp->next;
-		i++;
 	}
-	i = 0;
+	i = -1;
 	temp = philo;
-	while (i < philo_nbr)
+	while (++i < philo_nbr)
 	{
 		pthread_create(&(temp->philo), NULL, &routine, temp);
 		temp = temp->next;
-		i++;
 	}
 	death(philo);
 	mutex_destroy(philo);

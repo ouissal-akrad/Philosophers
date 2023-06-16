@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:56:31 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/15 12:51:33 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/16 02:47:22 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	ft_routine(t_list *philo)
 			philo->n_meals++;
 		if (philo->data->eat_time_max
 			&& philo->data->eat_time_max <= philo->n_meals)
+			{
+				printf("%lld\n",philo->data->eat_time_max);
 			exit(0);
+			}
 		ft_printf("is sleeping", philo);
 		my_usleep(philo->data->time_to_sleep);
 		ft_printf("is thinking", philo);
