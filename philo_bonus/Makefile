@@ -1,6 +1,6 @@
 NAME = philo_bonus
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 
 SRC = 	main.c\
 		libft.c\

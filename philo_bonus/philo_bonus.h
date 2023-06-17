@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:18:52 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 19:18:56 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/16 13:52:05 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_data
 	pid_t				*pid_table;
 	pthread_mutex_t		for_n_meals;
 	pthread_mutex_t		for_last_eat;
-	pthread_mutex_t		death;
 
 	unsigned long long	time_to_die;
 	unsigned long long	time_to_eat;

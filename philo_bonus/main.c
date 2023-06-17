@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/16 02:38:34 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/16 13:42:59 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,15 @@ t_data	*init_data(int ac, char **av)
 void	ft_fork(char **av, t_list *philo, t_data *data)
 {
 	int		philo_nbr;
-	// t_list	*next;
 	int		i;
 	pid_t	pid;
 
-	// next = NULL;
 	philo_nbr = ft_atoi(av[1]);
 	if (philo_nbr <= 0)
 		ft_error("Invalid number of philosophers");
 	i = 0;
 	while (i < philo_nbr)
 	{
-		// next = philo->next;
 		philo->data = data;
 		pid = fork();
 		if (pid == -1)

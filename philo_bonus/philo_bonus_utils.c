@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:40:57 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/13 19:16:29 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/16 16:51:12 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ void	waiting(t_list *philo)
 
 	status = -1;
 	while (waitpid(-1, &status, 0) > 0)
-		kill_all_philo(philo);
+	{
+		if (status == 0 || status == 1)
+			kill_all_philo(philo);
+	}
 }
