@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:56:31 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/17 10:41:22 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 11:36:18 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*death(void *arg)
 		{
 			sem_wait(philo->data->print);
 			printf("%lld %d died\n", ft_get_time() - philo->data->start,
-				philo->index);
+					philo->index);
 			exit(0);
 		}
 		usleep(100);
@@ -52,7 +52,9 @@ void	ft_routine(t_list *philo)
 		ft_printf("has taken a fork", philo);
 		sem_wait(philo->data->fork);
 		ft_printf("has taken a fork", philo);
+		sem_wait(philo->data->for_last_eat);
 		philo->last_eat = ft_get_time();
+		sem_post(philo->data->for_last_eat);
 		ft_printf("is eating", philo);
 		my_usleep(philo->data->time_to_eat);
 		sem_post(philo->data->fork);

@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:18:52 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/16 13:52:05 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 10:38:43 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_data
 	int					philo_nbr;
 	pid_t				*pid_table;
 	pthread_mutex_t		for_n_meals;
-	pthread_mutex_t		for_last_eat;
+	sem_t				*for_last_eat;
 
 	unsigned long long	time_to_die;
 	unsigned long long	time_to_eat;
