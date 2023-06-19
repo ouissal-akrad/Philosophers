@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:18:52 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/19 10:38:43 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:49:21 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ typedef struct s_data
 	sem_t				*print;
 	int					philo_nbr;
 	pid_t				*pid_table;
-	pthread_mutex_t		for_n_meals;
-	sem_t				*for_last_eat;
+	pthread_mutex_t		for_last_eat;
 
 	unsigned long long	time_to_die;
 	unsigned long long	time_to_eat;
@@ -63,7 +62,7 @@ t_list					*init_philo(char **av);
 void					kill_all_philo(t_list *philo);
 void					ft_routine(t_list *philo);
 unsigned long long		ft_get_time(void);
-void					ft_free(t_list *philo, int philo_size);
+void					ft_free(t_list *philo);
 void					waiting(t_list *philo);
 void					*death(void *arg);
 t_data					*init_data(int ac, char **av);

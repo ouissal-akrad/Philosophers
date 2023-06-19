@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:20:14 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/15 12:52:44 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:35:19 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,13 @@ void					*init_philo(int ac, char **av);
 t_list					*ft_lstlast(t_list *lst);
 void					*routine(void *arg);
 unsigned long long		ft_get_time(void);
-void					ft_free(t_list *philo, int philo_size);
+void					ft_free(t_list *philo);
 void					death(t_list *philo);
 void					ft_printf(char *msg, t_list *philo);
 void					my_usleep(unsigned long long time);
 unsigned long long		ft_get_time(void);
 int						helper(t_list *philo);
 void					sleeping(t_list *philo);
-void					ft_free(t_list *philo, int philo_size);
 void					init_philo_2(t_list *philo, int philo_nbr);
 void					detach_all_threads(t_list *philo);
 void					mutex_destroy(t_list *philo);

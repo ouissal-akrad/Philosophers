@@ -6,29 +6,11 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:31:57 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/15 13:01:16 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:30:21 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	ft_free(t_list *philo, int philo_size)
-{
-	int		i;
-	t_list	*tmp;
-
-	tmp = philo;
-	i = 0;
-	if (philo == NULL)
-		return ;
-	while (i < philo_size)
-	{
-		tmp = philo->next;
-		free(philo);
-		philo = tmp;
-		i++;
-	}
-}
 
 int	ft_isdigit(int c)
 {

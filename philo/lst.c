@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:20:49 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/19 11:46:39 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 16:00:25 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_list	*ft_lstnew(int ac, char **av)
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
-{ 
+{
 	t_list	*tmp;
 
 	if (!lst || !new)

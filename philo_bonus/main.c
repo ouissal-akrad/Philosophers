@@ -6,7 +6,7 @@
 /*   By: ouakrad <ouakrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 19:25:28 by ouakrad           #+#    #+#             */
-/*   Updated: 2023/06/19 11:37:57 by ouakrad          ###   ########.fr       */
+/*   Updated: 2023/06/19 16:01:12 by ouakrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_data	*init_data(int ac, char **av)
 	if (data->philo_nbr < 1 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0 || (data->eat_time_max <= 0 && ac == 6))
 		ft_error("Invalid argument");
+	pthread_mutex_init(&(data->for_last_eat), NULL);
 	sem_unlink("fork");
 	sem_unlink("print");
 	data->fork = sem_open("fork", O_CREAT, 666, data->philo_nbr);
@@ -101,6 +102,5 @@ int	main(int ac, char **av)
 	ft_fork(av, philo, data);
 	waiting(philo);
 	ft_close(philo);
-	// while(1);
 	return (0);
 }
